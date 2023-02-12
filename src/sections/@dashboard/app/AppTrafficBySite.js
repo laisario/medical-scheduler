@@ -1,8 +1,10 @@
 // @mui
 import PropTypes from 'prop-types';
-import { Box, Card, Paper, Typography, CardHeader, CardContent } from '@mui/material';
+import { Box, Card, Paper, Typography, CardContent, Button, Grid } from '@mui/material';
 // utils
 import { fShortenNumber } from '../../../utils/formatNumber';
+import Iconify from '../../../components/iconify';
+
 
 // ----------------------------------------------------------------------
 
@@ -12,11 +14,17 @@ AppTrafficBySite.propTypes = {
   list: PropTypes.array.isRequired,
 };
 
-export default function AppTrafficBySite({ title, subheader, list, ...other }) {
+export default function AppTrafficBySite({ title, list, ...other }) {
   return (
     <Card {...other}>
-      <CardHeader title={title} subheader={subheader} />
-
+      <Grid container direction="row" justifyContent="space-between" alignItems="center">
+        <h3 style={{marginLeft: 24}}>{title}</h3>
+        <Button
+          size="small"
+        >
+          <Iconify icon={'ic:baseline-plus'} color="#006097" />
+        </Button>
+      </Grid>
       <CardContent>
         <Box
           sx={{

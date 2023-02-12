@@ -11,8 +11,9 @@ import {
   Checkbox,
   MenuItem,
   IconButton,
-  CardHeader,
   FormControlLabel,
+  Button,
+  Grid,
 } from '@mui/material';
 // components
 import Iconify from '../../../components/iconify';
@@ -25,7 +26,7 @@ AppTasks.propTypes = {
   list: PropTypes.array.isRequired,
 };
 
-export default function AppTasks({ title, subheader, list, ...other }) {
+export default function AppTasks({ title, list, ...other }) {
   const { control } = useForm({
     defaultValues: {
       taskCompleted: ['2'],
@@ -34,7 +35,14 @@ export default function AppTasks({ title, subheader, list, ...other }) {
 
   return (
     <Card {...other}>
-      <CardHeader title={title} subheader={subheader} />
+      <Grid container direction="row" justifyContent="space-between" alignItems="center">
+        <h3 style={{marginLeft: 24}}>{title}</h3>
+        <Button
+          size="small"
+        >
+          <Iconify icon={'ic:baseline-plus'} color="#006097" />
+        </Button>
+      </Grid>
       <Controller
         name="taskCompleted"
         control={control}
