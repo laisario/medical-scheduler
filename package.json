@@ -38,6 +38,10 @@
     ]
   },
   "dependencies": {
+    "@aldabil/react-scheduler": "^2.6.13",
+    "@devexpress/dx-react-core": "^4.0.2",
+    "@devexpress/dx-react-scheduler": "^4.0.2",
+    "@devexpress/dx-react-scheduler-material-ui": "^4.0.2",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@faker-js/faker": "^7.6.0",

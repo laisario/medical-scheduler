@@ -34,11 +34,11 @@ import USERLIST from '../_mock/user';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Paciente', alignRight: false },
-  // { id: 'doctor', label: 'Médico', alignRight: false },
-  { id: 'insurance', label: 'Convênio', alignRight: false },
-  { id: 'isNew', label: 'Novo', alignRight: false },
-  { id: 'isScheduled', label: 'Tem consulta agendada?', alignRight: true },
+  { id: 'rooms', label: 'Salas', alignRight: false },
+  { id: 'doctor', label: 'Médico', alignRight: false },
+  { id: 'specialization', label: 'Especialização', alignRight: false },
+  // { id: 'time', label: 'Horário', alignRight: false },
+  // { id: 'showedUp', label: 'Compareceu?', alignRight: true },
   {id: ''}
 ];
 
@@ -149,16 +149,16 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title>Pacientes</title>
+        <title>Salas</title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Pacientes
+            Salas
           </Typography>
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            Novo paciente
+            Adicionar nova sala
           </Button>
         </Stack>
 
@@ -201,9 +201,9 @@ export default function UserPage() {
 
                         <TableCell align="left">{role}</TableCell>
 
-                        <TableCell align="right">{isVerified ? 'Yes' : 'No'}</TableCell>
-{/* 
-                        <TableCell align="left">
+                        {/* <TableCell align="right">{isVerified ? 'Yes' : 'No'}</TableCell> */}
+
+                        {/* <TableCell align="right">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell> */}
 

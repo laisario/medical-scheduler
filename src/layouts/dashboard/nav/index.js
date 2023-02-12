@@ -53,7 +53,7 @@ export default function Nav({ openNav, onCloseNav }) {
         '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
       }}
     >
-      <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
+      <Box sx={{ px: 2.5, py: 3, display: 'inline-flex', opacity: 0 }}>
         <Logo />
       </Box>
 
@@ -67,9 +67,9 @@ export default function Nav({ openNav, onCloseNav }) {
                 {account.displayName}
               </Typography>
 
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 {account.role}
-              </Typography>
+              </Typography> */}
             </Box>
           </StyledAccount>
         </Link>
@@ -89,16 +89,16 @@ export default function Nav({ openNav, onCloseNav }) {
 
           <Box sx={{ textAlign: 'center' }}>
             <Typography gutterBottom variant="h6">
-              Get more?
+              Nova consulta?
             </Typography>
 
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              From only $69
+              Clique abaixo para marcar rapidamente uma nova consulta :)
             </Typography>
           </Box>
 
           <Button href="https://material-ui.com/store/items/minimal-dashboard/" target="_blank" variant="contained">
-            Upgrade to Pro
+            Marcar consulta agora
           </Button>
         </Stack>
       </Box>
