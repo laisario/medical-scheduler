@@ -14,6 +14,8 @@ import {
   FormControlLabel,
   Button,
   Grid,
+  TextField,
+  Tooltip,
 } from '@mui/material';
 // components
 import Iconify from '../../../components/iconify';
@@ -26,25 +28,35 @@ AppTasks.propTypes = {
   list: PropTypes.array.isRequired,
 };
 
-export default function AppTasks({ title, list, ...other }) {
-  const { control } = useForm({
-    defaultValues: {
-      taskCompleted: ['2'],
-    },
-  });
+export default function AppTasks({ title, ...other }) {
+  const { control, getValues } = useForm({ defaultValues: { tasksCompleted: [] } });
+  const { tasksCompleted } = getValues();
+  const [list, setList] = useState([]);
+
+  const deleteCheckedTasks = () => {
+    setList(oldList => oldList.filter(task => !tasksCompleted.includes(task.id)))
+  };
 
   return (
     <Card {...other}>
       <Grid container direction="row" justifyContent="space-between" alignItems="center">
-        <h3 style={{marginLeft: 24}}>{title}</h3>
-        <Button
-          size="small"
-        >
-          <Iconify icon={'ic:baseline-plus'} color="#006097" />
-        </Button>
+        <h3>{title}</h3>
+        <Grid>
+          <Button
+            size="medium"
+            onClick={() => setList((oldList) => [{ id: oldList[0] ? oldList[0].id + 1 : 1, label: '' }, ...oldList])}
+          >
+            <Iconify width={24} icon={'ic:baseline-plus'} color="#006097" />
+          </Button>
+          <Tooltip title="Deletar marcados">
+            <Button size="medium" onClick={deleteCheckedTasks}>
+              <Iconify icon={'eva:trash-2-outline'} />
+            </Button>
+          </Tooltip>
+        </Grid>
       </Grid>
       <Controller
-        name="taskCompleted"
+        name="tasksCompleted"
         control={control}
         render={({ field }) => {
           const onSelected = (task) =>
@@ -58,6 +70,7 @@ export default function AppTasks({ title, list, ...other }) {
                   task={task}
                   checked={field.value.includes(task.id)}
                   onChange={() => field.onChange(onSelected(task.id))}
+                  setList={setList}
                 />
               ))}
             </>
@@ -73,14 +86,16 @@ export default function AppTasks({ title, list, ...other }) {
 TaskItem.propTypes = {
   checked: PropTypes.bool,
   onChange: PropTypes.func,
+
   task: PropTypes.shape({
     id: PropTypes.string,
     label: PropTypes.string,
   }),
 };
 
-function TaskItem({ task, checked, onChange }) {
+function TaskItem({ task, checked, onChange, setList }) {
   const [open, setOpen] = useState(null);
+  const [input, setInput] = useState(task.label);
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -90,31 +105,21 @@ function TaskItem({ task, checked, onChange }) {
     setOpen(null);
   };
 
-  const handleMarkComplete = () => {
-    handleCloseMenu();
-    console.log('MARK COMPLETE', task.id);
-  };
-
-  const handleShare = () => {
-    handleCloseMenu();
-    console.log('SHARE', task.id);
-  };
-
   const handleEdit = () => {
+    setInput(task.label);
+    setList((list) => list.map((item) => (item.id === task.id ? { ...item, label: '' } : item)));
     handleCloseMenu();
-    console.log('EDIT', task.id);
   };
 
   const handleDelete = () => {
+    setList((list) => list.filter((item) => item.id !== task.id));
     handleCloseMenu();
-    console.log('DELETE', task.id);
   };
 
   return (
     <Stack
       direction="row"
       sx={{
-        px: 2,
         py: 0.75,
         ...(checked && {
           color: 'text.disabled',
@@ -122,11 +127,30 @@ function TaskItem({ task, checked, onChange }) {
         }),
       }}
     >
-      <FormControlLabel
-        control={<Checkbox checked={checked} onChange={onChange} />}
-        label={task.label}
-        sx={{ flexGrow: 1, m: 0 }}
-      />
+      {task.label ? (
+        <FormControlLabel
+          control={<Checkbox checked={checked} onChange={onChange} />}
+          label={task.label}
+          sx={{ flexGrow: 1 }}
+        />
+      ) : (
+        <>
+          <FormControlLabel control={<Checkbox checked={checked} onChange={onChange} />} />
+          <TextField
+            id="standard-read-only-input"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                setList((oldList) => [{ id: task.id, label: input }, ...oldList.filter((item) => item.id !== task.id)]);
+                setInput('');
+              }
+            }}
+            variant="standard"
+            sx={{ flexGrow: 1, m: 0 }}
+          />
+        </>
+      )}
 
       <IconButton size="large" color="inherit" sx={{ opacity: 0.48 }} onClick={handleOpenMenu}>
         <Iconify icon={'eva:more-vertical-fill'} />
@@ -149,26 +173,16 @@ function TaskItem({ task, checked, onChange }) {
           },
         }}
       >
-        <MenuItem onClick={handleMarkComplete}>
-          <Iconify icon={'eva:checkmark-circle-2-fill'} sx={{ mr: 2 }} />
-          Mark Complete
-        </MenuItem>
-
         <MenuItem onClick={handleEdit}>
           <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem onClick={handleShare}>
-          <Iconify icon={'eva:share-fill'} sx={{ mr: 2 }} />
-          Share
+          Editar
         </MenuItem>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
+          Deletar
         </MenuItem>
       </Popover>
     </Stack>

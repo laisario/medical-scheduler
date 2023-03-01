@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // @mui
-import { Grid, Container, Typography, Button } from '@mui/material';
+import { Grid, Container, Typography } from '@mui/material';
 
 // scheduler
 import Schedule from '../components/scheduler/index';
@@ -76,13 +76,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} md={6}>
             <AppTasks
               title="Lembretes"
-              list={[
-                { id: '1', label: 'Create FireStone Logo' },
-                { id: '2', label: 'Add SCSS and JS files if required' },
-                { id: '3', label: 'Stakeholder Meeting' },
-                { id: '4', label: 'Scoping & Estimations' },
-                { id: '5', label: 'Sprint Showcase' },
-              ]}
+              style={{padding: '0px 16px'}}
             />
           </Grid>
         </Grid>
